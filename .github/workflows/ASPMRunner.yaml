@@ -41,8 +41,8 @@ jobs:
         run: |
           ${{ env.WORKDIR }}/src/ASPMRunner \
             --api-key df587299f15b01f64e5886c2308f8ad95cb50d755758cb7e2e41d1990c6b7180 \
-			      --connector_id 8097 \
-			      --account_id 1235152 \
+			--connector_id 8097 \
+			--account_id 1235152 \
         
       # 5. Upload results (optional)
       - name: Upload Results
