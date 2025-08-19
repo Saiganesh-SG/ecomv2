@@ -15,7 +15,7 @@ jobs:
       WORKDIR: ${{ github.workspace }}/wrkdir
     
     steps:
-      # 1. Checkout repository (copies code into src)
+      # 1. Checkout repository
       - uses: actions/checkout@v4
         with:
           path: ${{ env.WORKDIR }}/src
@@ -26,23 +26,24 @@ jobs:
         with:
           aws-access-key-id: ASIA5SVP5NZUCVQQLILW
           aws-secret-access-key: cnyoMpjDTIELBGWVLBJhCUomATxBcNhJxxmcTewt
-          aws-session-token: IQoJb3JpZ2luX2VjEHEaCXVzLXdlc3QtMiJIMEYCIQDiB97gneJyKZhg77BRQgj3OqqSpJdqLHtsF+N3NSYV3gIhAPqHKtSjz+X6I1JowA/YGxiPoXVC0x924soaOe/Ojo7ZKrYDCLr//////////wEQARoMOTMzNDUwNTc1NDY0IgxN+IYoe5XDU2NnW8oqigMpw4XopY4f85oKPe93ApJ0O41+zYEBwNzozuEFaAuNNE+B6qQiOJT6VhprtLcLr0d7OcXA1RN24KOmB17v+LOX/KtCxxoUTBZOzSe4hb2OKwDbkHEnUBCeebVqjUZCQfv86zEFRnLS0ArxNLGtoxXac2QSH0qo0nR6pdEtVcH+js8aukowq+6Ehxmrkr3egGKQuL3rKIUBIDMoZS+9qq9Bs2ZwWQkEtgfh/qtYFyhXydgP2Hf92UIDeIOvAkfmBqwmkg/HILbYq/BVISdYB+n1bGJNuPOUJbLbE3hh0cDOXQSffNu53E5UI2h/JTYmdds/8tONlXCAQMOznbQKvzpPI2BPLvDBv8zjmIWE1MORF8/gQ7rJd+UUoV45Vwtxr9Rl9ISHaozKHumkzo7bbF/ScNKHPXVWM0fdMardlrj/wUNxzmDHpRXXif6k1luiJKtYL34T1DxMSx9HAdyrmj+xkWVYtD7ctqEY3OPKpjBiMcx7pux4Loa15jmFof1ySQG/z8snG/HiSUr2MOP7kMUGOqUBu9fglWGDP9sQ1Ebgbos6obp3F9xOExE+d01yEtHOVwMIZntFHTdyX8IvIidYUpHsx1g0tv4y8ahgHOhde8PaSTXj0k2v4ISaVrpC8gU1p6OQ+kxuFEIYxmXS8A+UDFUnLIhcaAF29nvpLFjOgwOaqYnPiEcLTmWaxawQ26jX3pqDS2ICkflCBd5BRT5Hme7IcHVak4a0+2E50MUwEWXTmRPlG76D
+          aws-session-token: |
+            IQoJb3JpZ2luX2VjEHEaCXVzLXdlc3QtMiJIMEYCIQDiB97gneJyKZhg77BRQgj3OqqSpJdqLHtsF+N3NSYV3gIhAPqHKtSjz+X6I1JowA/YGxiPoXVC0x924soaOe/Ojo7ZKrYDCLr//////////wEQARoMOTMzNDUwNTc1NDY0IgxN+IYoe5XDU2NnW8oqigMpw4XopY4f85oKPe93ApJ0O41+zYEBwNzozuEFaAuNNE+B6qQiOJT6VhprtLcLr0d7OcXA1RN24KOmB17v+LOX/KtCxxoUTBZOzSe4hb2OKwDbkHEnUBCeebVqjUZCQfv86zEFRnLS0ArxNLGtoxXac2QSH0qo0nR6pdEtVcH+js8aukowq+6Ehxmrkr3egGKQuL3rKIUBIDMoZS+9qq9Bs2ZwWQkEtgfh/qtYFyhXydgP2Hf92UIDeIOvAkfmBqwmkg/HILbYq/BVISdYB+n1bGJNuPOUJbLbE3hh0cDOXQSffNu53E5UI2h/JTYmdds/8tONlXCAQMOznbQKvzpPI2BPLvDBv8zjmIWE1MORF8/gQ7rJd+UUoV45Vwtxr9Rl9ISHaozKHumkzo7bbF/ScNKHPXVWM0fdMardlrj/wUNxzmDHpRXXif6k1luiJKtYL34T1DxMSx9HAdyrmj+xkWVYtD7ctqEY3OPKpjBiMcx7pux4Loa15jmFof1ySQG/z8snG/HiSUr2MOP7kMUGOqUBu9fglWGDP9sQ1Ebgbos6obp3F9xOExE+d01yEtHOVwMIZntFHTdyX8IvIidYUpHsx1g0tv4y8ahgHOhde8PaSTXj0k2v4ISaVrpC8gU1p6OQ+kxuFEIYxmXS8A+UDFUnLIhcaAF29nvpLFjOgwOaqYnPiEcLTmWaxawQ26jX3pqDS2ICkflCBd5BRT5Hme7IcHVak4a0+2E50MUwEWXTmRPlG76D
           aws-region: us-west-2
 
-      # 3. Download binary directly to src directory
+      # 3. Download binary
       - name: Download Scanner
         run: |
           aws s3 cp s3://securin-qa-shiftleft/scanners/securin-cli/1.0.11/securin-cli-linux ${{ env.WORKDIR }}/src/ASPMRunner
           chmod +x ${{ env.WORKDIR }}/src/ASPMRunner
-          ls -la ${{ env.WORKDIR }}/src  # Verify download
+          ls -la ${{ env.WORKDIR }}/src
 
-      # 4. Execute scanner from src directory
+      # 4. Execute scanner
       - name: Run Scan
         working-directory: ${{ env.WORKDIR }}/src
         run: |
           ./ASPMRunner \
             --api_key df587299f15b01f64e5886c2308f8ad95cb50d755758cb7e2e41d1990c6b7180 \
-			--scan_type opensource,secrets,container \
+            --scan_type opensource,secrets,container \
             --connector_id 8097 \
             --account_id 1235152
 
