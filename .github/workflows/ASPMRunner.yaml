@@ -1,7 +1,7 @@
-name: ASPM RUNNER scan
+name: ASPM RUNNER
 
 on:
-  workflow_dispatch:  # Allows manual triggering
+  workflow_dispatch:
     inputs:
       logLevel:
         description: 'Log level'
@@ -15,36 +15,38 @@ jobs:
       WORKDIR: ${{ github.workspace }}/wrkdir
     
     steps:
-      # 1. Checkout repository (copies code into runner)
+      # 1. Checkout repository (copies code into src)
       - uses: actions/checkout@v4
         with:
-          path: ${{ env.WORKDIR }}/src  # Copies repo to /wrkdir/src
+          path: ${{ env.WORKDIR }}/src
 
       # 2. Configure AWS credentials
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ASIA5SVP5NZUPQEFJOOI
-          aws-secret-access-key: Nh4gNeMVt0pezQjF6h6yNWxK3nceUJkZGyEtn80z
-          aws-session-token: IQoJb3JpZ2luX2VjEHAaCXVzLXdlc3QtMiJGMEQCIBoq3iakUrufvfeFYrAW4HTCTaQzGz3ikY884+XteBzHAiBVSDdJDi/DJf1mfS4Fkc5p8P1Ad5om+imIbWLF9LUQMSq2Awi5//////////8BEAEaDDkzMzQ1MDU3NTQ2NCIMMzFvRYJ4LKVmc31GKooDeCMHrDZlZtxaquJdpuGQ8DHkg9K/Zk+IW4Jak4TNwd6zedACrTqa67A8IF5mEAAoE1ZUWJt7usrbkxBX4ACakVXg7Q6gvGS8gf2DiZLf5czw1+Zh5oK1D4yzJx1V6AK6e1ClPxq6FUOggnWDw0vrRfbiRA1sfmD9uGa1MUphDAGcgAiICPuAPTuf+fC4p5vm7jDyBSSJFDakqbAWdx/x54/vHtKRwSrlivbPRbMaJ0+fIGRglfAdw3008uANcsLEGLnOTbn/1WhwcHyPzqVKLr6TzeUltRxdC0DnlqR7ZuDrjkS78LruIajWqs7OjXhU3zPdBitv9rStFZYR5k+yPv6/DBHPcSbG/frwSU4yzS2H94+OBfi3Jxqqm2qe+zXsfwK4KIIzcQe163vKxUrtwGlFMUIzobey+p+OMShPhV/4P8+zIiaYDt8c5ArGc4g1F/SMJIvObTmA2otGZATQF9hwGVtW6WSS9uoN19yejW2SJOt6HSiozPfn4Gax4vJLHleTk2XdOJ8QoTDMzZDFBjqnAZQ+NxT9l58s+6TRxkLUGfwgcxOIQX3oC62Cp+BIjyadbJqrOz5v5d77ub8vuHuGTjVN/3qq4Qf0iPMfpFC2r/OUuhMIGQQAm1eXpYkgIqNJZd6u06EbqsR27/9QHIza5x/vf8oJ5GKsMLuwto0UO8R9mvebOqn5BjaYSaBdQu3+S242YOzlUpCEhMb9kEpH2MwVrtnlaOan5xQULXOtpAmSgbeFg66e
+          aws-access-key-id: ASIA5SVP5NZUCVQQLILW
+          aws-secret-access-key: cnyoMpjDTIELBGWVLBJhCUomATxBcNhJxxmcTewt
+          aws-session-token: IQoJb3JpZ2luX2VjEHEaCXVzLXdlc3QtMiJIMEYCIQDiB97gneJyKZhg77BRQgj3OqqSpJdqLHtsF+N3NSYV3gIhAPqHKtSjz+X6I1JowA/YGxiPoXVC0x924soaOe/Ojo7ZKrYDCLr//////////wEQARoMOTMzNDUwNTc1NDY0IgxN+IYoe5XDU2NnW8oqigMpw4XopY4f85oKPe93ApJ0O41+zYEBwNzozuEFaAuNNE+B6qQiOJT6VhprtLcLr0d7OcXA1RN24KOmB17v+LOX/KtCxxoUTBZOzSe4hb2OKwDbkHEnUBCeebVqjUZCQfv86zEFRnLS0ArxNLGtoxXac2QSH0qo0nR6pdEtVcH+js8aukowq+6Ehxmrkr3egGKQuL3rKIUBIDMoZS+9qq9Bs2ZwWQkEtgfh/qtYFyhXydgP2Hf92UIDeIOvAkfmBqwmkg/HILbYq/BVISdYB+n1bGJNuPOUJbLbE3hh0cDOXQSffNu53E5UI2h/JTYmdds/8tONlXCAQMOznbQKvzpPI2BPLvDBv8zjmIWE1MORF8/gQ7rJd+UUoV45Vwtxr9Rl9ISHaozKHumkzo7bbF/ScNKHPXVWM0fdMardlrj/wUNxzmDHpRXXif6k1luiJKtYL34T1DxMSx9HAdyrmj+xkWVYtD7ctqEY3OPKpjBiMcx7pux4Loa15jmFof1ySQG/z8snG/HiSUr2MOP7kMUGOqUBu9fglWGDP9sQ1Ebgbos6obp3F9xOExE+d01yEtHOVwMIZntFHTdyX8IvIidYUpHsx1g0tv4y8ahgHOhde8PaSTXj0k2v4ISaVrpC8gU1p6OQ+kxuFEIYxmXS8A+UDFUnLIhcaAF29nvpLFjOgwOaqYnPiEcLTmWaxawQ26jX3pqDS2ICkflCBd5BRT5Hme7IcHVak4a0+2E50MUwEWXTmRPlG76D
           aws-region: us-west-2
 
-      # 3. Download binary to wrkdir
+      # 3. Download binary directly to src directory
       - name: Download Scanner
         run: |
-          mkdir -p ${{ env.WORKDIR }}/bin
-          aws s3 cp s3://securin-qa-shiftleft/scanners/securin-cli/1.0.11/securin-cli-linux ${{ env.WORKDIR }}/bin/ASPMRunner
-          chmod +x ${{ env.WORKDIR }}/bin/ASPMRunner
+          aws s3 cp s3://securin-qa-shiftleft/scanners/securin-cli/1.0.11/securin-cli-linux ${{ env.WORKDIR }}/src/ASPMRunner
+          chmod +x ${{ env.WORKDIR }}/src/ASPMRunner
+          ls -la ${{ env.WORKDIR }}/src  # Verify download
 
-      # 4. Execute scanner (with example args)
+      # 4. Execute scanner from src directory
       - name: Run Scan
+        working-directory: ${{ env.WORKDIR }}/src
         run: |
-          ${{ env.WORKDIR }}/src/ASPMRunner \
-            --api-key df587299f15b01f64e5886c2308f8ad95cb50d755758cb7e2e41d1990c6b7180 \
-			--connector_id 8097 \
-			--account_id 1235152 \
-        
-      # 5. Upload results (optional)
+          ./ASPMRunner \
+            --api_key df587299f15b01f64e5886c2308f8ad95cb50d755758cb7e2e41d1990c6b7180 \
+			--scan_type opensource,secrets,container \
+            --connector_id 8097 \
+            --account_id 1235152
+
+      # 5. Upload results
       - name: Upload Results
         if: always()
         uses: actions/upload-artifact@v4
