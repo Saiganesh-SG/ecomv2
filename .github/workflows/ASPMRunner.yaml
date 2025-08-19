@@ -1,4 +1,4 @@
-name: Securin-ASPM Scan
+name: ASPM RUNNER scan
 
 on:
   workflow_dispatch:  # Allows manual triggering
