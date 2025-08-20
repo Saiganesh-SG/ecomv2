@@ -1,0 +1,49 @@
+name: ASPM-RUNNER
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: false
+        default: 'info'
+
+jobs:
+  scan-repository:
+    runs-on: ubuntu-latest
+    env:
+      WORKDIR: ${{ github.workspace }}/wrkdir
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: ${{ env.WORKDIR }}/src
+
+      - name: Configure AWS
+        run: |
+          mkdir -p ~/.aws
+          echo "[default]" > ~/.aws/credentials
+          echo "aws_access_key_id = ASIA5SVP5NZUKLL5TXPK" >> ~/.aws/credentials
+          echo "aws_secret_access_key = HOhvoQN218uGYgEiM7yRex4zFOCThUFd6RCJIFEg" >> ~/.aws/credentials
+          echo "aws_session_token = IQoJb3JpZ2luX2VjEIX//////////wEaCXVzLXdlc3QtMiJIMEYCIQD/4kPlRPBlr/TXH8DAozw1urn/aEWXTSUtr5hKGCK1zgIhAJGuQ9nXYq9THjxIM4sXNj24msu/Fjd/u64/nXKXmqnmKrYDCM7//////////wEQARoMOTMzNDUwNTc1NDY0Igz3h9e6xFHDk8l43l0qigPp/fN/JFMetd7Vle9kW43lVuZqOaF3tDZBTbTiYjlqCm5+u5K/aebDGTG9EHqLxWjxaWhwi51xeNnkubyuO3mJLJkvy1/kQivzCbAZVAiHs55LBsBPbY63KQ/+UtYXHibR2s5FaSeUy3I2ax6TjryC2QU6eN01U4QtMpq+Eo8KeeShiMkP/J81y1/Mt+GuGjxp/wo9BsP9kApThyus2kgSoeYIalTo1bvJXcOIKH5bhlXoy4RtcS8N2OqCTd6KwfbbRHUnf96lVgi8eRBdvPOQiaD9Llc8tYDNo1zgb4DIOWJYvhL6fahmvudE26lAJaJdtcpTndMuZ/BS7RugQRAhju2DLzESIpQ5CfUce+OFm9e5D/yZICaMbs3mO39bvh6TspcrVDRlnXWKr+1QnLXfQas/QoP9D3zmhjoEOy03FkUSB9uvQXy7ZfqWSBLF51rZM5kwd6UBmlMeJIlYSiN2Zm/otJdAjY/kopHbRGMfCFXfydh10P0oNDApzVPlud8Oq2tRTW/JYCcEMIKflcUGOqUB5deGVt8d4OrTpliXBq6baxNXvp3dz6ihDNmdUSu5OP02+r3U1VtYKN361jCeR2m7vUCOMJnS14BvB1o4HkB6CG5Xe8qD3EdqiTp48WL/4o4CgxCRkCfp/BNULuxlEYb05VsZt8LbsdyAuqiMVlHa60/rH8VUlDFWuV/1b/fh/8AveNecTSrbY+nmKIpgnT8GC6Ob91AKgULvX0jOvsd/jLFvno/M" >> ~/.aws/credentials
+
+      - name: Download Scanner
+        run: |
+          aws s3 cp s3://securin-qa-shiftleft/scanners/securin-cli/1.0.11/securin-cli-linux ${{ env.WORKDIR }}/src/ASPMRunner
+          chmod +x ${{ env.WORKDIR }}/src/ASPMRunner
+
+      - name: Run Scan
+        working-directory: ${{ env.WORKDIR }}/src
+        run: |
+          ./ASPMRunner \
+            --api_key df587299f15b01f64e5886c2308f8ad95cb50d755758cb7e2e41d1990c6b7180 \
+            --scan_type opensource,secrets,container \
+            --connector_id 8097 \
+            --account_id 1235152
+
+      - name: Upload Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-results
+          path: ${{ env.WORKDIR }}/results
