@@ -37,7 +37,7 @@ jobs:
         run: |
           ./ASPMRunner \
             --api_key df587299f15b01f64e5886c2308f8ad95cb50d755758cb7e2e41d1990c6b7180 \
-            --scan_type opensource,secrets,container \
+            --scanner_type secrets,IAC \
             --connector_id 8097 \
             --account_id 1235152
 
