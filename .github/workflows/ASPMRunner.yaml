@@ -15,29 +15,23 @@ jobs:
       WORKDIR: ${{ github.workspace }}/wrkdir
     
     steps:
-      # 1. Checkout repository
       - uses: actions/checkout@v4
         with:
           path: ${{ env.WORKDIR }}/src
 
-      # 2. Configure AWS credentials
       - name: Configure AWS
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ASIA5SVP5NZUCVQQLILW
-          aws-secret-access-key: cnyoMpjDTIELBGWVLBJhCUomATxBcNhJxxmcTewt
-          aws-session-token: |
-            IQoJb3JpZ2luX2VjEHEaCXVzLXdlc3QtMiJIMEYCIQDiB97gneJyKZhg77BRQgj3OqqSpJdqLHtsF+N3NSYV3gIhAPqHKtSjz+X6I1JowA/YGxiPoXVC0x924soaOe/Ojo7ZKrYDCLr//////////wEQARoMOTMzNDUwNTc1NDY0IgxN+IYoe5XDU2NnW8oqigMpw4XopY4f85oKPe93ApJ0O41+zYEBwNzozuEFaAuNNE+B6qQiOJT6VhprtLcLr0d7OcXA1RN24KOmB17v+LOX/KtCxxoUTBZOzSe4hb2OKwDbkHEnUBCeebVqjUZCQfv86zEFRnLS0ArxNLGtoxXac2QSH0qo0nR6pdEtVcH+js8aukowq+6Ehxmrkr3egGKQuL3rKIUBIDMoZS+9qq9Bs2ZwWQkEtgfh/qtYFyhXydgP2Hf92UIDeIOvAkfmBqwmkg/HILbYq/BVISdYB+n1bGJNuPOUJbLbE3hh0cDOXQSffNu53E5UI2h/JTYmdds/8tONlXCAQMOznbQKvzpPI2BPLvDBv8zjmIWE1MORF8/gQ7rJd+UUoV45Vwtxr9Rl9ISHaozKHumkzo7bbF/ScNKHPXVWM0fdMardlrj/wUNxzmDHpRXXif6k1luiJKtYL34T1DxMSx9HAdyrmj+xkWVYtD7ctqEY3OPKpjBiMcx7pux4Loa15jmFof1ySQG/z8snG/HiSUr2MOP7kMUGOqUBu9fglWGDP9sQ1Ebgbos6obp3F9xOExE+d01yEtHOVwMIZntFHTdyX8IvIidYUpHsx1g0tv4y8ahgHOhde8PaSTXj0k2v4ISaVrpC8gU1p6OQ+kxuFEIYxmXS8A+UDFUnLIhcaAF29nvpLFjOgwOaqYnPiEcLTmWaxawQ26jX3pqDS2ICkflCBd5BRT5Hme7IcHVak4a0+2E50MUwEWXTmRPlG76D
-          aws-region: us-west-2
+        run: |
+          mkdir -p ~/.aws
+          echo "[default]" > ~/.aws/credentials
+          echo "aws_access_key_id = ASIA5SVP5NZUKLL5TXPK" >> ~/.aws/credentials
+          echo "aws_secret_access_key = HOhvoQN218uGYgEiM7yRex4zFOCThUFd6RCJIFEg" >> ~/.aws/credentials
+          echo "aws_session_token = IQoJb3JpZ2luX2VjEIX//////////wEaCXVzLXdlc3QtMiJIMEYCIQD/4kPlRPBlr/TXH8DAozw1urn/aEWXTSUtr5hKGCK1zgIhAJGuQ9nXYq9THjxIM4sXNj24msu/Fjd/u64/nXKXmqnmKrYDCM7//////////wEQARoMOTMzNDUwNTc1NDY0Igz3h9e6xFHDk8l43l0qigPp/fN/JFMetd7Vle9kW43lVuZqOaF3tDZBTbTiYjlqCm5+u5K/aebDGTG9EHqLxWjxaWhwi51xeNnkubyuO3mJLJkvy1/kQivzCbAZVAiHs55LBsBPbY63KQ/+UtYXHibR2s5FaSeUy3I2ax6TjryC2QU6eN01U4QtMpq+Eo8KeeShiMkP/J81y1/Mt+GuGjxp/wo9BsP9kApThyus2kgSoeYIalTo1bvJXcOIKH5bhlXoy4RtcS8N2OqCTd6KwfbbRHUnf96lVgi8eRBdvPOQiaD9Llc8tYDNo1zgb4DIOWJYvhL6fahmvudE26lAJaJdtcpTndMuZ/BS7RugQRAhju2DLzESIpQ5CfUce+OFm9e5D/yZICaMbs3mO39bvh6TspcrVDRlnXWKr+1QnLXfQas/QoP9D3zmhjoEOy03FkUSB9uvQXy7ZfqWSBLF51rZM5kwd6UBmlMeJIlYSiN2Zm/otJdAjY/kopHbRGMfCFXfydh10P0oNDApzVPlud8Oq2tRTW/JYCcEMIKflcUGOqUB5deGVt8d4OrTpliXBq6baxNXvp3dz6ihDNmdUSu5OP02+r3U1VtYKN361jCeR2m7vUCOMJnS14BvB1o4HkB6CG5Xe8qD3EdqiTp48WL/4o4CgxCRkCfp/BNULuxlEYb05VsZt8LbsdyAuqiMVlHa60/rH8VUlDFWuV/1b/fh/8AveNecTSrbY+nmKIpgnT8GC6Ob91AKgULvX0jOvsd/jLFvno/M" >> ~/.aws/credentials
 
-      # 3. Download binary
       - name: Download Scanner
         run: |
           aws s3 cp s3://securin-qa-shiftleft/scanners/securin-cli/1.0.11/securin-cli-linux ${{ env.WORKDIR }}/src/ASPMRunner
           chmod +x ${{ env.WORKDIR }}/src/ASPMRunner
-          ls -la ${{ env.WORKDIR }}/src
 
-      # 4. Execute scanner
       - name: Run Scan
         working-directory: ${{ env.WORKDIR }}/src
         run: |
@@ -47,7 +41,6 @@ jobs:
             --connector_id 8097 \
             --account_id 1235152
 
-      # 5. Upload results
       - name: Upload Results
         if: always()
         uses: actions/upload-artifact@v4
